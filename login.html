@@ -1,14 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login</title>
+  <meta charset="UTF-8">
+  <title>Login - Odel Ratin</title>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
   <script type="module" src="auth.js"></script>
 </head>
 <body>
   <h2>Login</h2>
-  <input type="email" id="login_email" placeholder="Email"><br>
-  <input type="password" id="login_password" placeholder="Password"><br>
+  <input type="email" id="login_email" placeholder="Email"><br><br>
+  <input type="password" id="login_password" placeholder="Password"><br><br>
   <button onclick="login()">Login</button>
-  <p>Don't have an account? <a href="register.html">Register here</a></p>
+  <p>Don’t have an account? <a href="register.html">Register here</a></p>
+
+  <script type="module">
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDEsQ2uD03nWPjC0_rIyxxTSF0tfpQjzx0",
+      authDomain: "premium-work.firebaseapp.com",
+      projectId: "premium-work",
+      storageBucket: "premium-work.appspot.com",
+      messagingSenderId: "30328208601",
+      appId: "1:30328208601:web:48cb0952137b132145d2c8",
+      measurementId: "G-JEE6G2XCPQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.login = () => {
+      const email = document.getElementById("login_email").value;
+      const password = document.getElementById("login_password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          alert("Login successful");
+          window.location.href = "home.html";
+        })
+        .catch(error => {
+          alert("Login failed: " + error.message);
+        });
+    };
+  </script>
 </body>
 </html>
