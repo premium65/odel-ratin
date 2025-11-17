@@ -2,16 +2,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Withdraw</title>
   <link rel="stylesheet" href="style.css" />
+  <script type="module" src="auth.js"></script>
+
+  <!-- Firebase Withdraw Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDEsQ2uD03nWPjC0_rIyxxTSF0tfpQjzx0",
+      authDomain: "premium-work.firebaseapp.com",
+      projectId: "premium-work",
+      storageBucket: "premium-work.appspot.com",
+      messagingSenderId: "30328208601",
+      appId: "1:30328208601:web:48cb0952137b132145d2c8",
+      measurementId: "G-JEE6G2XCPQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.submitWithdraw = async () => {
+      const amount = document.querySelector("input[type='number']").value;
+      if (!amount) return alert("Please enter an amount");
+
+      try {
+        await addDoc(collection(db, "withdrawals"), {
+          amount: parseFloat(amount),
+          date: new Date().toISOString()
+        });
+        alert("Withdraw request submitted!");
+      } catch (e) {
+        alert("Error: " + e.message);
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 30px;
+      background: white;
+      box-shadow: 0 0 10px #ccc;
+      border-radius: 10px;
+    }
+    .container h2 {
+      text-align: center;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: green;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
 </head>
-<body class="withdraw">
-  <div class="card">
-    <div class="visa">###############<br>WALLET BALANCE</div>
-    <input type="number" placeholder="Enter Amount" />
-    <button>WITHDRAW</button>
-    <p><em>Bank Detail</em></p>
+<body>
+  <div class="container">
+    <h2>Withdraw Request</h2>
+    <p>Enter the amount you want to withdraw:</p>
+    <input type="number" placeholder="Enter amount (LKR)" />
+    <button onclick="submitWithdraw()">WITHDRAW</button>
   </div>
 </body>
 </html>
